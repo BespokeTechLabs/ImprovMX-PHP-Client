@@ -1,0 +1,41 @@
+{
+    "name": "bespoke/improvmx",
+    "description": "ImprovMX API client library for Laravel PHP",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Lewis Smallwood",
+            "email": "lewis@bespoke.dev",
+            "homepage": "https://www.bespoke.dev"
+        }
+    ],
+    "homepage": "https://github.com/bespoke/improvmx",
+    "keywords": ["Laravel", "ImprovMX", "Email", "Forwarding", "Client", "Library", "API", "PHP"],
+    "require": {
+        "illuminate/support": "~7|~8"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~9.0",
+        "orchestra/testbench": "~5|~6"
+    },
+    "autoload": {
+        "psr-4": {
+            "Bespoke\\ImprovMX\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Bespoke\\ImprovMX\\Tests\\": "tests"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Bespoke\\ImprovMX\\ImprovMXServiceProvider"
+            ],
+            "aliases": {
+                "ImprovMX": "Bespoke\\ImprovMX\\Facades\\ImprovMX"
+            }
+        }
+    }
+}
