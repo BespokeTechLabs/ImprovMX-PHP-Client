@@ -87,6 +87,58 @@ $success = $improvMx->client()->domains()->delete("domain.com");
 $details = $improvMx->client()->domains()->checkDomainValidity("domain.com");
 ```
 
+### Aliases
+
+```php
+$improvMx = new ImprovMX();
+
+// Return a collection of Alias entities for a domain.
+$aliases = $improvMx->client()->aliases()->list("domain.com");
+
+// This command sets up email forwarding from user@domain.com to forward@email.com.
+// Returns the newly created Alias entity or null (if failed to create).
+$improvMx->client()->aliases()->add("domain.com", "user", "forward@email.com");
+
+// Return the Alias entity (or null) for a given alias e.g. (alias@domain.com).
+$alias = $improvMx->client()->aliases()->get("domain.com", "alias");
+
+// Update the forwarding address for an alias - returns the Alias entity or null.
+$improvMx->client()->aliases()->update("domain.com", "alias", "forward@email.com");
+
+// Returns delete successful - true or false.
+$success = $improvMx->client()->aliases()->delete("domain.com", "alias");
+```
+
+### Logs
+
+```php
+$improvMx = new ImprovMX();
+
+// Return a collection of Log entities for a domain.
+$logs = $improvMx->client()->logs()->getDomainLogs("domain.com");
+
+// Return a collection of Log entities for a domain's alias.
+$logs = $improvMx->client()->logs()->getAliasLogs("domain.com", "alias");
+```
+
+### SMTP Credentials
+
+```php
+$improvMx = new ImprovMX();
+
+// Return a collection of Credential entities for a domain.
+$credentials = $improvMx->client()->smtpCredentials()->list("domain.com");
+
+// Add a new SMTP account for a domain (returns with the Credential entity or null).
+$logs = $improvMx->client()->smtpCredentials()->add("domain.com", "username", "password");
+
+// Update the password for an SMTP account (by username) - returns the Credential entity or null.
+$improvMx->client()->smtpCredentials()->update("domain.com", "username", "newPassword");
+
+// Returns delete successful - true or false.
+$success = $improvMx->client()->smtpCredentials()->delete("domain.com", "username");
+```
+
 ## Security
 
 If you discover a security vulnerability within this package, please send an email to Bespoke Technology Labs at hello@bespoke.dev. All security vulnerabilities will be promptly addressed. You may view our full security policy [here](https://github.com/BespokeTechLabs/ImprovMX-PHP-Client/security/policy).
