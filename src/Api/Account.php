@@ -15,6 +15,11 @@ class Account extends AbstractApi
     {
         try {
             $response = $this->getRequest("account");
+
+            if (is_null($response)) return null;
+            if (!is_array($response)) return null;
+            if (!array_key_exists("account", $response)) return null;
+
             return new AccountEntity($response["account"]);
 
         } catch (Exception $e) {
@@ -30,6 +35,10 @@ class Account extends AbstractApi
     {
         try {
             $response = $this->getRequest("account/whitelabels");
+
+            if (is_null($response)) return new Collection();
+            if (!is_array($response)) return new Collection();
+            if (!array_key_exists("whitelabels", $response)) return new Collection();
 
             $key = "name";
             $response["whitelabels"] = array_map(function($item) use ($key) {

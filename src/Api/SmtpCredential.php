@@ -18,6 +18,10 @@ class SmtpCredential extends AbstractApi
         try {
             $response = $this->getRequest("domains/".$domain."/credentials");
 
+            if (is_null($response)) return new Collection();
+            if (!is_array($response)) return new Collection();
+            if (!array_key_exists("credentials", $response)) return new Collection();
+
             $entries = array_map(function ($log) {
                 return new Credential($log);
             }, $response["credentials"]);
@@ -45,6 +49,10 @@ class SmtpCredential extends AbstractApi
 
             $response = $this->postRequest("domains/".$domain."/credentials", $payload);
 
+            if (is_null($response)) return null;
+            if (!is_array($response)) return null;
+            if (!array_key_exists("credential", $response)) return null;
+
             return new Credential($response["credential"]);
 
         } catch (Exception $e) {
@@ -66,6 +74,11 @@ class SmtpCredential extends AbstractApi
 
         try {
             $response = $this->putRequest("domains/".$domain."/credentials/".$username, $payload);
+
+            if (is_null($response)) return null;
+            if (!is_array($response)) return null;
+            if (!array_key_exists("credential", $response)) return null;
+
             return new Credential($response["credential"]);
 
         } catch (Exception $e) {

@@ -21,6 +21,10 @@ class Log extends AbstractApi
 
             $response = $this->getRequest("domains/".$domain."/logs".$queryString);
 
+            if (is_null($response)) return new Collection();
+            if (!is_array($response)) return new Collection();
+            if (!array_key_exists("logs", $response)) return new Collection();
+
             $entries = array_map(function ($log) {
                 return new LogEntity($log);
             }, $response["logs"]);
@@ -45,6 +49,10 @@ class Log extends AbstractApi
             if (!is_null($nextCursor)) $queryString = "?next_cursor=".$nextCursor;
 
             $response = $this->getRequest("domains/".$domain."/logs/".$alias.$queryString);
+
+            if (is_null($response)) return new Collection();
+            if (!is_array($response)) return new Collection();
+            if (!array_key_exists("logs", $response)) return new Collection();
 
             $entries = array_map(function ($log) {
                 return new LogEntity($log);

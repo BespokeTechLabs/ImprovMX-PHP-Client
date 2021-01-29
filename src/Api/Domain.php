@@ -2,6 +2,7 @@
 
 namespace Bespoke\ImprovMX\Api;
 
+use Bespoke\ImprovMX\Entities\Domain\Validity\RecordValidity;
 use Exception;
 use Illuminate\Support\Collection;
 use Bespoke\ImprovMX\Entities\Domain\Domain as DomainEntity;
@@ -27,6 +28,10 @@ class Domain extends AbstractApi
                     if (!is_null($isActive)) $queryString .= "&is_active=".intval($isActive);
 
                     $response = $this->getRequest("domains?page=".$i."&limit=".$numberPerPage.$queryString);
+
+                    if (is_null($response)) break;
+                    if (!is_array($response)) break;
+                    if (!array_key_exists("domains", $response)) break;
 
                     $entries = array_map(function ($domain) {
                         return new DomainEntity($domain);
@@ -64,6 +69,10 @@ class Domain extends AbstractApi
 
             $response = $this->postRequest("domains", $payload);
 
+            if (is_null($response)) return null;
+            if (!is_array($response)) return null;
+            if (!array_key_exists("domain", $response)) return null;
+
             return new DomainEntity($response["domain"]);
 
         } catch (Exception $e) {
@@ -79,6 +88,11 @@ class Domain extends AbstractApi
     public function get($domain) {
         try {
             $response = $this->getRequest("domains/".$domain);
+
+            if (is_null($response)) return null;
+            if (!is_array($response)) return null;
+            if (!array_key_exists("domain", $response)) return null;
+
             return new DomainEntity($response["domain"]);
 
         } catch (Exception $e) {
@@ -100,6 +114,11 @@ class Domain extends AbstractApi
 
         try {
             $response = $this->putRequest("domains/".$domain, $payload);
+
+            if (is_null($response)) return null;
+            if (!is_array($response)) return null;
+            if (!array_key_exists("domain", $response)) return null;
+
             return new DomainEntity($response["domain"]);
 
         } catch (Exception $e) {
@@ -131,12 +150,17 @@ class Domain extends AbstractApi
     /**
      * Checks if the MX entries are valid for a domain.
      * @param string $domain Name of the domain.
-     * @return DomainValidity|null
+     * @return RecordValidity
      */
     public function checkDomainValidity($domain) {
         try {
             $response = $this->getRequest("domains/".$domain."/check");
-            return new DomainValidity($response);
+
+            if (is_null($response)) return null;
+            if (!is_array($response)) return null;
+            if (!array_key_exists("records", $response)) return null;
+
+            return new RecordValidity($response["records"]);
 
         } catch (Exception $e) {
             return null;

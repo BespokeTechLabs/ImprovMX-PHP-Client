@@ -29,6 +29,10 @@ class Alias extends AbstractApi
 
                     $response = $this->getRequest("domains/".$domain."/aliases?page=".$i."&limit=".$numberPerPage.$queryString);
 
+                    if (is_null($response)) break;
+                    if (!is_array($response)) break;
+                    if (!array_key_exists("aliases", $response)) break;
+
                     $entries = array_map(function ($domain) {
                         return new AliasEntity($domain);
                     }, $response["aliases"]);
@@ -65,6 +69,10 @@ class Alias extends AbstractApi
 
             $response = $this->postRequest("domains/".$domain."/aliases", $payload);
 
+            if (is_null($response)) return null;
+            if (!is_array($response)) return null;
+            if (!array_key_exists("alias", $response)) return null;
+
             return new AliasEntity($response["alias"]);
 
         } catch (Exception $e) {
@@ -81,6 +89,11 @@ class Alias extends AbstractApi
     public function get($domain, $alias) {
         try {
             $response = $this->getRequest("domains/".$domain."/aliases/".$alias);
+
+            if (is_null($response)) return null;
+            if (!is_array($response)) return null;
+            if (!array_key_exists("alias", $response)) return null;
+
             return new AliasEntity($response["alias"]);
 
         } catch (Exception $e) {
@@ -102,6 +115,11 @@ class Alias extends AbstractApi
 
         try {
             $response = $this->putRequest("domains/".$domain."/aliases/".$alias, $payload);
+
+            if (is_null($response)) return null;
+            if (!is_array($response)) return null;
+            if (!array_key_exists("alias", $response)) return null;
+
             return new AliasEntity($response["alias"]);
 
         } catch (Exception $e) {
