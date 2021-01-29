@@ -83,7 +83,7 @@ $improvMx->client()->domains()->update("domain.com", "email@email.com", "whitela
 // Returns delete successful - true or false.
 $success = $improvMx->client()->domains()->delete("domain.com");
 
-// Returns a DomainValidity entity.
+// Returns a RecordValidity entity.
 $details = $improvMx->client()->domains()->checkDomainValidity("domain.com");
 ```
 
